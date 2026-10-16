@@ -53,6 +53,16 @@
         </ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-input
+          label="Fecha de nacimiento"
+          labelPlacement="stacked"
+          type="date"
+          formControlName="fechaNacimiento"
+          [errorText]="mensajeError('fechaNacimiento')">
+        </ion-input>
+      </ion-item>
+
     </ion-list>
 
     <div class="ion-padding-top">
@@ -66,7 +76,7 @@
 
   <ion-toast
     [isOpen]="mostrarToast()"
-    message="Producto guardado localmente"
+    message="Formulario enviado correctamente"
     color="success"
     [duration]="2500"
     (didDismiss)="mostrarToast.set(false)">

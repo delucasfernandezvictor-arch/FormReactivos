@@ -29,6 +29,12 @@ export function skuValidator(control: AbstractControl): ValidationErrors | null 
   return /^[A-Za-z0-9]{12}$/.test(valor) ? null : { skuInvalido: true };
 }
 
+// Validador personalizado: la fecha de nacimiento no puede ser futura
+export function fechaNoFuturaValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  return new Date(control.value) > new Date() ? { fechaFutura: true } : null;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -62,7 +68,8 @@ export class HomePage {
       sku: ['', [Validators.required, skuValidator]],
       nombre: ['', [Validators.required]],
       categoria: ['', [Validators.required]],
-      stockMinimo: [null, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(1)]]
+      stockMinimo: [null, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(1)]],
+      fechaNacimiento: ['', [Validators.required, fechaNoFuturaValidator]]
     });
   }
 
@@ -74,6 +81,7 @@ export class HomePage {
     if (errores['skuInvalido']) return 'El SKU debe tener exactamente 12 caracteres alfanuméricos.';
     if (errores['pattern']) return 'Introduce un número entero.';
     if (errores['min']) return 'El stock mínimo debe ser mayor que 0.';
+    if (errores['fechaFutura']) return 'La fecha de nacimiento no puede ser futura.';
     return 'Valor no válido.';
   }
 
