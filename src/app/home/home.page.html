@@ -1,20 +1,74 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Nuevo Producto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="inventarioForm" (ngSubmit)="onSubmit()">
+    <ion-list lines="full">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+      <ion-item>
+        <ion-input
+          label="Código de barras (SKU)"
+          labelPlacement="floating"
+          type="text"
+          maxlength="12"
+          formControlName="sku"
+          [errorText]="mensajeError('sku')">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Nombre del producto"
+          labelPlacement="floating"
+          type="text"
+          formControlName="nombre"
+          [errorText]="mensajeError('nombre')">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-select
+          label="Categoría"
+          labelPlacement="floating"
+          placeholder="Selecciona una categoría"
+          formControlName="categoria"
+          [errorText]="mensajeError('categoria')">
+          @for (cat of categorias; track cat) {
+            <ion-select-option [value]="cat">{{ cat }}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Stock mínimo"
+          labelPlacement="floating"
+          type="number"
+          inputmode="numeric"
+          formControlName="stockMinimo"
+          [errorText]="mensajeError('stockMinimo')">
+        </ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <div class="ion-padding-top">
+      <ion-button expand="block" type="submit" [disabled]="inventarioForm.invalid || isSubmitting()">
+        Guardar producto
+      </ion-button>
+    </div>
+  </form>
+
+  <ion-loading [isOpen]="isSubmitting()" message="Guardando producto..."></ion-loading>
+
+  <ion-toast
+    [isOpen]="mostrarToast()"
+    message="Producto guardado localmente"
+    color="success"
+    [duration]="2500"
+    (didDismiss)="mostrarToast.set(false)">
+  </ion-toast>
 </ion-content>
