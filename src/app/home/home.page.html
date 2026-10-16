@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Nuevo Producto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="alternarModoOscuro()">
+        {{ modoOscuro() ? 'Modo claro' : 'Modo oscuro' }}
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -58,6 +63,7 @@
           label="Fecha de nacimiento"
           labelPlacement="stacked"
           type="date"
+          [max]="hoy"
           formControlName="fechaNacimiento"
           [errorText]="mensajeError('fechaNacimiento')">
         </ion-input>
@@ -71,6 +77,11 @@
       </ion-button>
     </div>
   </form>
+
+  <!-- Solo aparece cuando ya se ha enviado un formulario -->
+   <ion-button expand="block" fill="outline" type="button" [disabled]="!ultimoEnvio()" (click)="descargarPdf()">
+    Descargar PDF
+  </ion-button>
 
   <ion-loading [isOpen]="isSubmitting()" message="Guardando producto..."></ion-loading>
 
