@@ -58,7 +58,7 @@ export function fechaNoFuturaValidator(control: AbstractControl): ValidationErro
     IonToast
   ],
 })
-export class HomePage {
+export class RegistroPage {
   public inventarioForm: FormGroup;
 
   public isSubmitting = signal<boolean>(false);
