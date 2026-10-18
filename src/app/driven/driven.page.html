@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Formulario Template-Driven</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/registro">Ir a Reactivo</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="contenedor">
+    <!-- #formulario="ngForm": Angular crea el FormGroup a partir de la plantilla -->
+    <form #formulario="ngForm" (ngSubmit)="onSubmit(formulario)">
+      <ion-list lines="full">
+
+        <ion-item>
+          <ion-input
+            label="Código de barras (SKU)"
+            labelPlacement="floating"
+            type="text"
+            maxlength="12"
+            name="sku"
+            [(ngModel)]="modelo.sku"
+            #sku="ngModel"
+            required
+            pattern="[A-Za-z0-9]{12}"
+            [errorText]="mensajeError(sku, 'El SKU debe tener exactamente 12 caracteres alfanuméricos.')">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Nombre del producto"
+            labelPlacement="floating"
+            type="text"
+            name="nombre"
+            [(ngModel)]="modelo.nombre"
+            #nombre="ngModel"
+            required
+            [errorText]="mensajeError(nombre)">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-select
+            label="Categoría"
+            labelPlacement="floating"
+            placeholder="Selecciona una categoría"
+            name="categoria"
+            [(ngModel)]="modelo.categoria"
+            #categoria="ngModel"
+            required
+            [errorText]="mensajeError(categoria)">
+            @for (cat of categorias; track cat) {
+              <ion-select-option [value]="cat">{{ cat }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Stock mínimo"
+            labelPlacement="floating"
+            type="number"
+            inputmode="numeric"
+            name="stockMinimo"
+            [(ngModel)]="modelo.stockMinimo"
+            #stock="ngModel"
+            required
+            pattern="[0-9]+"
+            appMayorQueCero
+            [errorText]="mensajeError(stock, 'Introduce un número entero.')">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Fecha de nacimiento"
+            labelPlacement="stacked"
+            type="date"
+            [max]="hoy"
+            name="fechaNacimiento"
+            [(ngModel)]="modelo.fechaNacimiento"
+            #fecha="ngModel"
+            required
+            appFechaNoFutura
+            [errorText]="mensajeError(fecha)">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Contraseña"
+            labelPlacement="floating"
+            type="password"
+            name="password"
+            [(ngModel)]="modelo.password"
+            #password="ngModel"
+            required
+            pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
+            [errorText]="mensajeError(password, 'Mínimo 8 caracteres, con letras y números.')">
+          </ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <div class="ion-padding-top">
+        <ion-button expand="block" type="submit" [disabled]="formulario.invalid || isSubmitting()">
+          Guardar producto
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+  <ion-loading [isOpen]="isSubmitting()" message="Guardando producto..."></ion-loading>
+
+  <ion-toast
+    [isOpen]="mostrarToast()"
+    message="Formulario enviado correctamente"
+    color="success"
+    [duration]="2500"
+    (didDismiss)="mostrarToast.set(false)">
+  </ion-toast>
+</ion-content>

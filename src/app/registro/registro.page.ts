@@ -7,6 +7,7 @@ import {
   AbstractControl,
   ValidationErrors
 } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -52,6 +53,7 @@ async function cifrarSHA256(texto: string): Promise<string> {
   styleUrls: ['registro.page.scss'],
   imports: [
     ReactiveFormsModule,
+    RouterLink,
     IonHeader,
     IonToolbar,
     IonTitle,
